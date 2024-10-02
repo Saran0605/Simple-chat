@@ -109,17 +109,15 @@ $result1 = mysqli_query($conn, $query1);
 while($row = mysqli_fetch_assoc($result)) {
     
 ?>
-        <div class="message right"><?php echo $row['chat']; ?></div>
+        <div class="message left"><?php echo $row['chat'];?></div>
 <?php
 }?>
-
-<?php
+         <?php
 
 while($row = mysqli_fetch_assoc($result1)) {
     
 ?>
-        
-        <div class="message left"><?php echo $row['chat']; ?></div>
+        <div class="message right"><?php echo $row['chat'];?></div>
         <?php
 }?>
     </div>
@@ -140,7 +138,7 @@ while($row = mysqli_fetch_assoc($result1)) {
             url:"backend.php",
             type:"POST",
             data:{
-                p1_send:true,
+                p2_send:true,
                 msg : message,
             },
             success:function(response){
