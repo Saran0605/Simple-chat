@@ -1,6 +1,18 @@
+<?php
+include('db.php');
+
+$query = "SELECT * FROM person1";
+
+$result = mysqli_query($conn, $query);
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Box</title>
@@ -84,23 +96,55 @@
     </style>
 </head>
 <body>
+    
 
-<div class="chat-container">
+<div class="chat-container" id="box">
     <div class="messages" id="messages">
-        <div class="message left">Hello!</div>
+    <?php
 
-
-
+while($row = mysqli_fetch_assoc($result)) {
+    
+?>
+        <div class="message right"><?php echo $row['chat']; ?></div>
+<?php
+}?>
         
-        <div class="message right">Hi, how are you?</div>
+        <div class="message left"></div>
     </div>
 
     <div class="input-container">
         <input type="text" class="input-box" id="messageInput" placeholder="Type a message">
-        <button class="send-btn"">Send</button>
+        <button class="send-btn">Send</button>
     </div>
 </div>
 
+<script>
+
+    $(document).on("click",".send-btn",function(e){
+        e.preventDefault();
+        var message = $("#messageInput").val();
+        console.log(message);
+        $.ajax({
+            url:"backend.php",
+            type:"POST",
+            data:{
+                p1_send:true,
+                msg : message,
+            },
+            success:function(response){
+                var res = jQuery.parseJSON(response);
+                if(res.status == 200){
+                    $("#messageInput").val("");
+                    $('#box').load(location.href + "#box");
+
+                }
+                else{
+                    alert("message not sent,Try again");
+                }
+            }
+    });
+});
+</script>
 
 
 </body>
